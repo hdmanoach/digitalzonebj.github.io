@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Digital Zone BJ - Catalogue</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background: #f9f9f9;
+    color: #222;
+  }
+  header {
+    background: #004080;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  header h1 {
+    margin: 0;
+  }
+  nav button {
+    background: #007acc;
+    border: none;
+    padding: 0.5rem 1rem;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  nav button:hover {
+    background: #005999;
+  }
+  main {
+    padding: 2rem;
+    max-width: 900px;
+    margin: auto;
+  }
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+    gap: 1.5rem;
+  }
+  .product-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .product-card h3 {
+    margin: 0 0 0.5rem 0;
+    color: #004080;
+  }
+  .product-card p.description {
+    flex-grow: 1;
+    font-size: 0.9rem;
+    color: #555;
+  }
+  .product-card .price {
+    font-weight: 700;
+    color: #0066cc;
+    margin-top: 1rem;
+    font-size: 1.1rem;
+  }
+  .product-card button.buy-btn {
+    margin-top: 1rem;
+    background: #0066cc;
+    border: none;
+    color: white;
+    padding: 0.6rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+  .product-card button.buy-btn:hover {
+    background: #004c99;
+  }
+  footer {
+    margin-top: 3rem;
+    text-align: center;
+    color: #777;
+    font-size: 0.85rem;
+  }
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html"><h1>Digital Zone BJ</h1></a>
+  <nav>
+    <button id="btnLogin">Connexion</button>
+  </nav>
+</header>
+<main>
+  <h2>Catalogue des produits</h2>
+
+  <div class="product-grid" id="productGrid">
+  <div class="product-card">
+    <img src="images/smartphone-xyz.jpg" alt="Smartphone XYZ" class="product-image" />
+    <h3>Smartphone XYZ</h3>
+    <p class="description">Smartphone dernier cri avec écran 6.5"</p>
+    <div class="price">75 000 FCFA</div>
+    <button class="buy-btn">Acheter</button>
+  </div>
+</div>
+  <div class="product-grid" id="productGrid">
+    <div class="product-card">
+      <img src="images/Casqueaudio.jpg" alt="Casque audio Bluetooth
+" class="product-image" />
+      <h3>Casque audio Bluetooth</h3>
+      <p class="description">Casque sans fil avec réduction de bruit</p>
+      <div class="price">15 000 FCFA</div>
+      <button class="buy-btn">Acheter</button>
+    </div>
+  </div>
+    
+    <div class="product-grid" id="productGrid">
+    <div class="product-card">
+      <img src="images/Chargeur.jpg" alt="Chargeur rapide 20W
+" class="product-image" />
+      <h3>Chargeur rapide 20W</h3>
+      <p class="description">Chargeur USB-C compatible tous appareils</p>
+      <div class="price">5 000 FCFA</div>
+      <button class="buy-btn">Acheter</button>
+    </div>
+  </div>
+</main>
+<footer>
+  &copy; 2025 Digital Zone BJ
+</footer>
+
+<script>
+  document.getElementById('btnLogin').addEventListener('click', () => {
+    window.location.href = 'login.html';
+  });
+
+  // Simple alert achat simulé
+  document.getElementById('productGrid').addEventListener('click', e => {
+    if(e.target.classList.contains('buy-btn')) {
+      const productName = e.target.closest('.product-card').querySelector('h3').textContent;
+      alert(`Merci pour votre achat de "${productName}" !`);
+    }
+  });
+</script>
+</body>
+</html>

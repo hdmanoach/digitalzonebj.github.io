@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Connexion / Inscription - Digital Zone BJ</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+    .container {
+      background: rgba(0,0,0,0.6);
+      padding: 2rem 3rem;
+      border-radius: 12px;
+      width: 320px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.7);
+      text-align: center;
+      animation: fadeIn 1s ease forwards;
+    }
+    h2 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    input[type="text"], input[type="password"], input[type="email"] {
+      padding: 0.6rem 0.8rem;
+      border-radius: 6px;
+      border: none;
+      font-size: 1rem;
+    }
+    input[type="submit"] {
+      background: #003366;
+      color: white;
+      font-weight: 700;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    input[type="submit"]:hover {
+      background: #002244;
+    }
+    .toggle-link {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #cce6ff;
+      cursor: pointer;
+      text-decoration: underline;
+      user-select: none;
+    }
+    .toggle-link:hover {
+      color: #99ccff;
+    }
+    .error-msg {
+      color: #ff6666;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      display: none;
+      animation: shake 0.3s ease;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(-20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 id="formTitle">Connexion</h2>
+    <div id="errorMsg" class="error-msg"></div>
+    <form id="authForm">
+      <input type="text" id="username" placeholder="Nom utilisateur" required />
+      <input type="password" id="password" placeholder="Mot de passe" required />
+      <input type="submit" value="Se connecter" />
+    </form>
+    <div class="toggle-link" id="toggleForm">Créer un compte</div>
+  </div>
+
+  <script>
+    const formTitle = document.getElementById('formTitle');
+    const toggleForm = document.getElementById('toggleForm');
+    const authForm = document.getElementById('authForm');
+    const errorMsg = document.getElementById('errorMsg');
+    let isLogin = true;
+
+    toggleForm.addEventListener('click', () => {
+      isLogin = !isLogin;
+      errorMsg.style.display = 'none';
+      if (isLogin) {
+        formTitle.textContent = 'Connexion';
+        authForm.innerHTML = `
+          <input type="text" id="username" placeholder="Nom utilisateur" required />
+          <input type="password" id="password" placeholder="Mot de passe" required />
+          <input type="submit" value="Se connecter" />
+        `;
+        toggleForm.textContent = 'Créer un compte';
+      } else {
+        formTitle.textContent = 'Inscription';
+        authForm.innerHTML = `
+          <input type="text" id="username" placeholder="Nom utilisateur" required />
+          <input type="email" id="email" placeholder="Email" required />
+          <input type="password" id="password" placeholder="Mot de passe" required />
+          <input type="submit" value="S'inscrire" />
+        `;
+        toggleForm.textContent = 'Retour à la connexion';
+      }
+    });
+
+    authForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      errorMsg.style.display = 'none';
+      const username = authForm.querySelector('#username').value.trim();
+      const password = authForm.querySelector('#password').value.trim();
+
+      if (!username || !password) {
+        errorMsg.textContent = 'Veuillez remplir tous les champs.';
+        errorMsg.style.display = 'block';
+        return;
+      }
+
+      if (!isLogin) {
+        const email = authForm.querySelector('#email').value.trim();
+        if (!email || !email.includes('@')) {
+          errorMsg.textContent = 'Veuillez entrer un email valide.';
+          errorMsg.style.display = 'block';
+          return;
+        }
+        alert(`Inscription réussie pour ${username} (${email}) ! Vous pouvez maintenant vous connecter.`);
+        toggleForm.click();
+        return;
+      }
+
+      // Simuler une connexion simple
+      if (username === 'vendeur' && password === '1234') {
+        window.location.href = 'dashboard.html';
+      } else {
+        errorMsg.textContent = 'Nom utilisateur ou mot de passe incorrect.';
+        errorMsg.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>

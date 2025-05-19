@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Digital Zone BJ - Accueil</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Style pour le chatbot */
+    .chatbot-window {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: black;
+      border: 1px solid #ddd;
+      padding: 20px;
+      width: 300px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .chatbot-window h2 {
+      margin-top: 0;
+    }
+
+    #chatbot-input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="container">
+      <img src="images/logo.png" alt="Logo Digital Zone BJ" class="logo" />
+      <nav class="nav">
+        <ul>
+          <li><a href="index.html" class="active">Accueil</a></li>
+          <li><a href="login.html">Vendeurs</a></li>
+          <li><a href="catalogue.html">Catalogue</a></li>
+          <li><a href="login.html">Se connecter</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="seller.html">Devenir Vendeurs</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="banner">
+    <div class="container">
+      <h1>Bienvenue sur Digital Zone BJ</h1>
+      <p>La plateforme qui connecte toutes les boutiques électroniques du Bénin</p>
+      <a href="catalogue.html" class="btn-primary">Découvrir les boutiques</a>
+    </div>
+  </section>
+
+  <section class="how-it-works">
+    <div class="container">
+      <h2>Comment ça marche ?</h2>
+      <div class="steps">
+        <div class="step">
+          <img src="images/step1.png" alt="Inscription facile" />
+          <h3>Inscription facile</h3>
+          <p>Les vendeurs s'inscrivent rapidement pour exposer leurs produits.</p>
+        </div>
+        <div class="step">
+          <img src="images/step2.png" alt="Gestion simplifiée" />
+          <h3>Gestion simplifiée</h3>
+          <p>Un tableau de bord intuitif pour gérer les produits et commandes.</p>
+        </div>
+        <div class="step">
+          <img src="images/step3.png" alt="Achats sécurisés" />
+          <h3>Achats sécurisés</h3>
+          <p>Les acheteurs peuvent commander en toute confiance via la plateforme.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials">
+    <div class="container">
+      <h2>Témoignages</h2>
+      <div class="testimonial-list">
+        <div class="testimonial">
+          <p>« Digital Zone BJ a boosté la visibilité de ma boutique ! »</p>
+          <strong>- Jean, vendeur</strong>
+        </div>
+        <div class="testimonial">
+          <p>« J’ai trouvé facilement les produits électroniques dont j’avais besoin. »</p>
+          <strong>- Amina, acheteuse</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer" id="contact">
+    <div class="container">
+      <p> 2025 Digital Zone BJ - Tous droits réservés</p>
+      <div class="social">
+        <a href="#"><i class="bi bi-facebook"></i></a>
+        <a href="#"><i class="bi bi-instagram"></i></a>
+        <a href="#"><i class="bi bi-twitter"></i></a>
+      </div>
+      
+      <!-- À mettre dans <body> à la place de ton bloc chatbot actuel -->
+      <i class="fas fa-robot" id="chatbot-icon" style="cursor:pointer; font-size:24px; margin-top: 10px;"></i>
+
+      <div id="chatbot-window" class="chatbot-window">
+        <h2>Comment puis-je vous aider ?</h2>
+        <div id="chatbot-messages" style="height: 200px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+          <!-- Messages apparaîtront ici -->
+        </div>
+        <input type="text" id="chatbot-input" placeholder="Tapez votre question..." />
+      </div>
+
+    </div>
+  </footer>
+</body>
+  
+<script>
+  const chatbotIcon = document.getElementById('chatbot-icon');
+  const chatbotWindow = document.getElementById('chatbot-window');
+  const chatbotInput = document.getElementById('chatbot-input');
+  const chatbotMessages = document.getElementById('chatbot-messages');
+
+  // Ouvrir/Fermer la fenêtre du chatbot
+  chatbotIcon.addEventListener('click', function (e) {
+    chatbotWindow.style.display = chatbotWindow.style.display === 'block' ? 'none' : 'block';
+    e.stopPropagation();
+  });
+
+  // Fermer le chatbot si clic en dehors
+  document.addEventListener('click', function (event) {
+    if (!chatbotWindow.contains(event.target) && event.target !== chatbotIcon) {
+      chatbotWindow.style.display = 'none';
+    }
+  });
+
+  // Envoyer un message
+  chatbotInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && chatbotInput.value.trim() !== '') {
+      const userMessage = chatbotInput.value;
+      addMessage('Vous', userMessage);
+      chatbotInput.value = '';
+
+      // Simuler une réponse du bot
+      setTimeout(() => {
+        const botReply = getBotReply(userMessage);
+        addMessage('Bot', botReply);
+      }, 500);
+    }
+  });
+
+  function addMessage(sender, text) {
+    const messageEl = document.createElement('div');
+    messageEl.innerHTML = `<strong>${sender}:</strong> ${text}`;
+    chatbotMessages.appendChild(messageEl);
+    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+  }
+
+  function getBotReply(message) {
+    // Réponses simples (tu peux personnaliser ou connecter à un vrai bot plus tard)
+    const lower = message.toLowerCase();
+    if (lower.includes('bonjour')) return "Bonjour ! Comment puis-je vous aider ?";
+    if (lower.includes('produit')) return "Vous pouvez consulter notre catalogue ici : catalogue.html";
+    if (lower.includes('vendeur')) return "Pour devenir vendeur, cliquez sur 'Devenir Vendeurs' dans le menu.";
+    return "Merci pour votre message. Un agent vous répondra bientôt.";
+  }
+</script>
+
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devenir vendeur</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .header {
+            background-color: #0d3b66;
+            color: white;
+            padding: 20px 0;
+        }
+        .header h1 {
+            text-align: center;
+            margin: 0;
+        }
+        .header p {
+            text-align: center;
+            margin: 10px 0;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea {
+            width: 90%;
+            padding: 10px;
+        }
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        textarea:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        p {
+            text-align: center;
+            margin-top: 20px;
+        }
+        a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 600px) {
+            form {
+                padding: 10px;
+            }
+            button {
+                width: 100%;
+            }
+        }
+        @media (max-width: 400px) {
+            h1 {
+                font-size: 24px;
+            }
+            label {
+                font-size: 14px;
+            }
+            input[type="text"],
+            input[type="email"],
+            input[type="tel"],
+            textarea {
+                font-size: 14px;
+            }
+            button {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Devenir un vendeur</h1>
+            <p>Pour devenir un vendeur sur notre plateforme, veuillez remplir le formulaire ci-dessous.</p>
+        </div>
+    </header>
+    <form action="">
+        <label for="name">Nom:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="phone">Téléphone:</label>
+        <input type="tel" id="phone" name="phone" required>
+
+        <label for="store-name">Nom de la boutique:</label>
+        <input type="text" id="store-name" name="store-name" required>
+
+        <label for="store-description">Description de la boutique:</label>
+        <textarea id="store-description" name="store-description" required></textarea>
+
+        <button type="submit">Soumettre</button>
+        <p>En soumettant ce formulaire, vous acceptez nos <a href="#">conditions d'utilisation</a>.</p>
+        <p>Vous pouvez également nous contacter à <a href="mailto:jHhYt@example.com">digitalezonebj.com</a> si vous avez des questions.</p>
+    </form>
+</body>
+<script>
+    // JavaScript pour la soumission du formulaire
+    document.querySelector('form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Empêche le rechargement de la page
+
+        // Récupérer les valeurs du formulaire
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const storeName = document.getElementById('store-name').value;
+        const storeDescription = document.getElementById('store-description').value;
+
+        // Afficher un message de confirmation (vous pouvez remplacer cela par une requête AJAX)
+        alert(`Merci ${name} ! Votre demande pour devenir vendeur`);
+        alert(`Monsieur ${name}, vous serez contacté à l'adresse ${email} ou au numéro ${phone} pour plus d'informations sur votre boutique ${storeName}.`);
+    });
+</script>
+</html>

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Digital Zone BJ - Tableau de bord</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0; background: #f5f7fa; color: #333;
+  }
+  header {
+    background: #003366;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  header h1 {
+    margin: 0; font-weight: 700; font-size: 1.5rem;
+  }
+  nav button {
+    background: #0066cc;
+    border: none;
+    padding: 0.5rem 1rem;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  nav button:hover {
+    background: #005bb5;
+  }
+
+  .container {
+    display: flex;
+    min-height: calc(100vh - 72px);
+  }
+  aside {
+    width: 220px;
+    background: #004080;
+    color: white;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  aside button {
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 0.7rem 1rem;
+    cursor: pointer;
+    text-align: left;
+    font-size: 1rem;
+    border-radius: 4px;
+    transition: background-color 0.25s ease;
+  }
+  aside button:hover, aside button.active {
+    background: #0059b3;
+  }
+  main {
+    flex-grow: 1;
+    padding: 2rem;
+    background: white;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.05);
+    overflow-y: auto;
+  }
+  h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #003366;
+  }
+  .stats {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .stat {
+    background: #0066cc;
+    color: white;
+    flex: 1;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.25rem;
+    box-shadow: 0 2px 8px rgba(0,102,204,0.3);
+    transition: transform 0.3s ease;
+  }
+  .stat:hover {
+    transform: scale(1.05);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  thead {
+    background: #003366;
+    color: white;
+  }
+  th, td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+  }
+  tbody tr:hover {
+    background: #f0f8ff;
+  }
+  button.action-btn {
+    background: #007acc;
+    border: none;
+    color: white;
+    padding: 0.3rem 0.7rem;
+    margin-right: 0.3rem;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: background-color 0.25s ease;
+  }
+  button.action-btn:hover {
+    background: #005f99;
+  }
+  /* Modal styles */
+  .modal {
+    display: none; 
+    position: fixed; 
+    z-index: 20; 
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+  }
+  .modal-content {
+    background-color: #fefefe;
+    margin: 8% auto; 
+    padding: 1.5rem;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 450px;
+    border-radius: 10px;
+    position: relative;
+    animation: slideDown 0.4s ease forwards;
+  }
+  @keyframes slideDown {
+    from {opacity: 0; transform: translateY(-30px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    right: 1rem;
+    top: 0.5rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+  }
+  label {
+    display: block;
+    margin-top: 1rem;
+    font-weight: 600;
+  }
+  input[type="text"], input[type="number"], textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.3rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+  }
+  textarea {
+    min-height: 80px;
+  }
+  .modal-footer {
+    margin-top: 1.5rem;
+    text-align: right;
+  }
+  .btn-primary {
+    background: #0066cc;
+    border: none;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .btn-primary:hover {
+    background: #004c99;
+  }
+  .btn-secondary {
+    background: #ccc;
+    border: none;
+    color: #333;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 0.5rem;
+    transition: background-color 0.3s ease;
+  }
+  .btn-secondary:hover {
+    background: #bbb;
+  }
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html"><h1>Digital Zone BJ</h1></a>
+  <nav>
+    <button id="logoutBtn">Déconnexion</button>
+  </nav>
+</header>
+
+<div class="container">
+  <aside>
+    <button class="active" id="btnProducts">Mes Produits</button>
+    <button id="btnOrders">Commandes</button>
+    <button id="btnProfile">Profil</button>
+  </aside>
+
+  <main>
+    <section id="sectionProducts">
+      <h2>Mes Produits</h2>
+      <div class="stats">
+        <div class="stat" title="Nombre de produits">Produits : <span id="countProducts">3</span></div>
+        <div class="stat" title="Total ventes">Ventes : <span id="countSales">15</span></div>
+        <div class="stat" title="Commandes en cours">Commandes : <span id="countOrders">2</span></div>
+      </div>
+      <button class="btn-primary" id="addProductBtn">Ajouter un produit</button>
+
+      <table>
+        <thead>
+          <tr><th>Nom</th><th>Prix (FCFA)</th><th>Description</th><th>Actions</th></tr>
+        </thead>
+        <tbody id="productList">
+          <tr>
+            <td>Smartphone XYZ</td>
+            <td>75 000</td>
+            <td>Smartphone dernier cri avec écran 6.5"</td>
+            <td>
+              <button class="action-btn editBtn">Modifier</button>
+              <button class="action-btn deleteBtn" style="background:#cc3300;">Supprimer</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Casque audio Bluetooth</td>
+            <td>15 000</td>
+            <td>Casque sans fil avec réduction de bruit</td>
+            <td>
+              <button class="action-btn editBtn">Modifier</button>
+              <button class="action-btn deleteBtn" style="background:#cc3300;">Supprimer</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Chargeur rapide 20W</td>
+            <td>5 000</td>
+            <td>Chargeur USB-C compatible tous appareils</td>
+            <td>
+              <button class="action-btn editBtn">Modifier</button>
+              <button class="action-btn deleteBtn" style="background:#cc3300;">Supprimer</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="sectionOrders" style="display:none;">
+      <h2>Commandes en cours</h2>
+      <table>
+        <thead>
+          <tr><th>Commande</th><th>Client</th><th>Produit</th><th>Quantité</th><th>Statut</th><th>Actions</th></tr>
+        </thead>
+        <tbody id="ordersList">
+          <tr>
+            <td>#001</td>
+            <td>Mme Adjo</td>
+            <td>Smartphone XYZ</td>
+            <td>1</td>
+            <td>En traitement</td>
+            <td><button class="action-btn completeOrderBtn" style="background:#009933;">Terminer</button></td>
+          </tr>
+          <tr>
+            <td>#002</td>
+            <td>M. Kossi</td>
+            <td>Casque audio Bluetooth</td>
+            <td>2</td>
+            <td>En attente</td>
+            <td><button class="action-btn completeOrderBtn" style="background:#009933;">Terminer</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="sectionProfile" style="display:none;">
+      <h2>Mon Profil</h2>
+      <p><strong>Nom du vendeur : </strong> Mario Houinsou</p>
+      <p><strong>Email : </strong> mario@example.com</p>
+      <p><strong>Téléphone : </strong> +229 90 00 00 00</p>
+      <button class="btn-primary" id="editProfileBtn">Modifier profil</button>
+    </section>
+  </main>
+</div>
+
+<!-- Modal produit -->
+<div id="productModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="closeModal">&times;</span>
+    <h3 id="modalTitle">Ajouter un produit</h3>
+    <form id="productForm">
+      <label for="productName">Nom du produit</label>
+      <input type="text" id="productName" name="productName" required />
+
+      <label for="productPrice">Prix (FCFA)</label>
+      <input type="number" id="productPrice" name="productPrice" min="0" required />
+
+      <label for="productDesc">Description</label>
+      <textarea id="productDesc" name="productDesc" required></textarea>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" id="cancelModalBtn">Annuler</button>
+        <button type="submit" class="btn-primary" id="saveProductBtn">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Navigation entre sections
+  const btnProducts = document.getElementById('btnProducts');
+  const btnOrders = document.getElementById('btnOrders');
+  const btnProfile = document.getElementById('btnProfile');
+  const sections = {
+    products: document.getElementById('sectionProducts'),
+    orders: document.getElementById('sectionOrders'),
+    profile: document.getElementById('sectionProfile')
+  };
+  const navButtons = [btnProducts, btnOrders, btnProfile];
+
+  function setActiveSection(sectionName) {
+    Object.keys(sections).forEach(key => {
+      sections[key].style.display = (key === sectionName) ? 'block' : 'none';
+    });
+    navButtons.forEach(btn => btn.classList.remove('active'));
+    if(sectionName === 'products') btnProducts.classList.add('active');
+    else if(sectionName === 'orders') btnOrders.classList.add('active');
+    else if(sectionName === 'profile') btnProfile.classList.add('active');
+  }
+
+  btnProducts.addEventListener('click', () => setActiveSection('products'));
+  btnOrders.addEventListener('click', () => setActiveSection('orders'));
+  btnProfile.addEventListener('click', () => setActiveSection('profile'));
+
+  // Modal ajout / édition produit
+  const productModal = document.getElementById('productModal');
+  const addProductBtn = document.getElementById('addProductBtn');
+  const closeModal = document.getElementById('closeModal');
+  const cancelModalBtn = document.getElementById('cancelModalBtn');
+  const productForm = document.getElementById('productForm');
+  const modalTitle = document.getElementById('modalTitle');
+  const productList = document.getElementById('productList');
+
+  let editIndex = null;
+
+  function openModal(edit=false, index=null) {
+    productForm.reset();
+    if(edit && index !== null) {
+      modalTitle.textContent = 'Modifier le produit';
+      const tr = productList.rows[index];
+      productForm.productName.value = tr.cells[0].textContent;
+      productForm.productPrice.value = tr.cells[1].textContent.replace(/\s/g,'');
+      productForm.productDesc.value = tr.cells[2].textContent;
+      editIndex = index;
+    } else {
+      modalTitle.textContent = 'Ajouter un produit';
+      editIndex = null;
+    }
+    productModal.style.display = 'block';
+  }
+  function closeModalFunc() {
+    productModal.style.display = 'none';
+  }
+  addProductBtn.addEventListener('click', () => openModal());
+  closeModal.addEventListener('click', closeModalFunc);
+  cancelModalBtn.addEventListener('click', closeModalFunc);
+  window.addEventListener('click', (e) => {
+    if(e.target === productModal) closeModalFunc();
+  });
+
+  // Formulaire sauvegarde produit
+  productForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = productForm.productName.value.trim();
+    const price = Number(productForm.productPrice.value);
+    const desc = productForm.productDesc.value.trim();
+    if(!name || price < 0 || !desc) return alert('Veuillez remplir correctement tous les champs.');
+
+    if(editIndex !== null) {
+      // Modification
+      const tr = productList.rows[editIndex];
+      tr.cells[0].textContent = name;
+      tr.cells[1].textContent = price.toLocaleString('fr-FR');
+      tr.cells[2].textContent = desc;
+    } else {
+      // Ajout
+      const newRow = productList.insertRow();
+      newRow.insertCell(0).textContent = name;
+      newRow.insertCell(1).textContent = price.toLocaleString('fr-FR');
+      newRow.insertCell(2).textContent = desc;
+      const actionsCell = newRow.insertCell(3);
+      actionsCell.innerHTML = `<button class="action-btn editBtn">Modifier</button> <button class="action-btn deleteBtn" style="background:#cc3300;">Supprimer</button>`;
+    }
+
+    updateProductCount();
+    closeModalFunc();
+  });
+
+  // Actions Modifier / Supprimer produits (déléguées)
+  productList.addEventListener('click', (e) => {
+    if(e.target.classList.contains('editBtn')) {
+      const row = e.target.closest('tr');
+      const index = Array.from(productList.rows).indexOf(row);
+      openModal(true, index);
+    } else if(e.target.classList.contains('deleteBtn')) {
+      if(confirm('Supprimer ce produit ?')) {
+        const row = e.target.closest('tr');
+        productList.deleteRow(Array.from(productList.rows).indexOf(row));
+        updateProductCount();
+      }
+    }
+  });
+
+  // Mise à jour compteur produits
+  function updateProductCount() {
+    document.getElementById('countProducts').textContent = productList.rows.length;
+  }
+  updateProductCount();
+
+  // Terminer commande (section orders)
+  const ordersList = document.getElementById('ordersList');
+  ordersList.addEventListener('click', e => {
+    if(e.target.classList.contains('completeOrderBtn')) {
+      const row = e.target.closest('tr');
+      row.cells[4].textContent = 'Terminée';
+      e.target.disabled = true;
+      e.target.textContent = 'Terminée';
+      updateOrderCount();
+    }
+  });
+
+  function updateOrderCount() {
+    const rows = Array.from(ordersList.rows);
+    const count = rows.filter(r => r.cells[4].textContent !== 'Terminée').length;
+    document.getElementById('countOrders').textContent = count;
+  }
+  updateOrderCount();
+
+  // Bouton déconnexion (simulé)
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    alert('Déconnexion simulée. Recharger pour revenir à la page login.');
+    window.location.href = 'login.html';
+  });
+</script>
+</body>
+</html>
