@@ -154,7 +154,10 @@
         // Afficher un message de confirmation (vous pouvez remplacer cela par une requête AJAX)
         alert(`Merci ${name} ! Votre demande pour devenir vendeur`);
         alert(`Monsieur ${name}, vous serez contacté à l'adresse ${email} ou au numéro ${phone} pour plus d'informations sur votre boutique ${storeName}.`);
-        window.location.href = './index.html'; // même dossier
+        // Réinitialiser le formulaire
+        document.querySelector('form').reset();
+        // Rediriger vers la page d'accueil après soumission
+        window.location.href = 'index.html'; // Décommentez cette ligne si vous souhaitez rediriger vers une autre page
     });
 </script>
 </html>
