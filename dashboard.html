@@ -215,7 +215,107 @@
     text-decoration: none;
     color: inherit;
   }
-  
+  @media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  aside {
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+    justify-content: space-around;
+  }
+
+  aside button {
+    flex: 1;
+    text-align: center;
+    padding: 0.8rem 0.5rem;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  main {
+    padding: 1rem;
+  }
+
+  .stats {
+    flex-direction: column;
+  }
+
+  .stat {
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
+
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody tr {
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 1rem;
+    background: #f9f9f9;
+  }
+
+  tbody td {
+    padding: 0.5rem 0;
+    position: relative;
+  }
+
+  tbody td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    display: block;
+    color: #333;
+    margin-bottom: 0.3rem;
+  }
+
+  .modal-content {
+    margin: 15% auto;
+    width: 95%;
+    padding: 1rem;
+  }
+
+  .btn-primary, .btn-secondary {
+    width: 100%;
+    margin: 0.3rem 0;
+  }
+
+  .modal-footer {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+    align-items: stretch;
+  }
+}
+  @media (max-width: 480px) {
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    header h1 {
+      font-size: 1.2rem;
+    }
+    nav button {
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+    aside {
+      flex-direction: column;
+      width: 100%;
+    }
+    aside button {
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
+  }
 </style>
 </head>
 <body>
@@ -469,11 +569,24 @@
   }
   updateOrderCount();
 
+  // Ajout des data-labels pour tableaux responsive
+  document.querySelectorAll('table').forEach(table => {
+    const headers = Array.from(table.querySelectorAll('thead th'));
+    table.querySelectorAll('tbody tr').forEach(row => {
+      Array.from(row.children).forEach((td, i) => {
+        if (headers[i]) {
+          td.setAttribute('data-label', headers[i].innerText);
+        }
+      });
+    });
+  });
+
   // Bouton déconnexion (simulé)
   document.getElementById('logoutBtn').addEventListener('click', () => {
     alert('Déconnexion simulée. Recharger pour revenir à la page login.');
     window.location.href = 'login.html';
   });
+
 </script>
 </body>
 </html>
