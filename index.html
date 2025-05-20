@@ -22,8 +22,14 @@
     }
 
     .chatbot-window h2 {
-      margin-top: 0;
+  margin-top: 0;
+  font-size: 18px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
     }
+    
 
     #chatbot-input {
       width: 100%;
@@ -111,12 +117,11 @@
         <a href="#"><i class="bi bi-instagram"></i>Instagram</a>
         <a href="#"><i class="bi bi-twitter"></i>TWITTER</a>
     </div>
-      
-      <!-- À mettre dans <body> à la place de ton bloc chatbot actuel -->
+    <div>
       <i class="fas fa-robot" id="chatbot-icon" style="cursor:pointer; font-size:24px; margin-top: 10px;"></i>
-
       <div id="chatbot-window" class="chatbot-window">
         <h2>Comment puis-je vous aider ?</h2>
+        <span id="chatbot-close" style="float:right; cursor:pointer; color:white;">&times;</span>
         <div id="chatbot-messages" style="height: 200px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
           <!-- Messages apparaîtront ici -->
         </div>
@@ -176,6 +181,10 @@
     if (lower.includes('vendeur')) return "Pour devenir vendeur, cliquez sur 'Devenir Vendeurs' dans le menu.";
     return "Merci pour votre message. Un agent vous répondra bientôt.";
   }
+  const chatbotClose = document.getElementById('chatbot-close');
+chatbotClose.addEventListener('click', function () {
+  chatbotWindow.style.display = 'none';
+});
 </script>
 
 </html>
