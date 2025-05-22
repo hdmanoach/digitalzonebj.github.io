@@ -138,9 +138,21 @@
 <footer>
   &copy; 2025 Digital Zone BJ
 </footer>
-
 <script>
   document.getElementById('btnLogin').addEventListener('click', () => {
+    window.location.href = 'login1.html';
+  });
+
+  // Rediriger vers la page de connexion avant achat
+  document.querySelectorAll('.buy-btn').forEach(button => {
+    button.addEventListener('click', (e) => {
+      const productName = e.target.closest('.product-card').querySelector('h3').textContent;
+      // Stocker le produit choisi dans le localStorage (ou dans l'URL)
+      localStorage.setItem('productToBuy', productName);
+      window.location.href = 'login.html';
+    });
+  });
+/*  document.getElementById('btnLogin').addEventListener('click', () => {
     window.location.href = 'login.html';
   });
 
@@ -150,7 +162,7 @@
       const productName = e.target.closest('.product-card').querySelector('h3').textContent;
       alert(`Merci pour votre achat de "${productName}" !`);
     }
-  });
+  });*/
 </script>
 </body>
 </html>
